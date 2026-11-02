@@ -15,31 +15,287 @@
         {
           "title": "Introduction",
           "topics": [
-            "Comparison between procedural programming paradigm and object-oriented programming paradigm",
-            "Basic data types",
-            "Derived data types",
-            "Constants",
-            "Tokens",
-            "Keywords",
-            "Identifiers and variables",
-            "Concepts of an object and a class",
-            "Difference between structure and class",
-            "Control structures",
-            "Arrays and strings"
+            {
+              "name": "Comparison between procedural programming paradigm and object-oriented programming paradigm",
+              "description": "Compares organizing programs around procedures and operations with organizing them around objects that combine state and behavior.",
+              "relatedConcepts": [
+                "Basic data types",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Basic data types",
+              "description": "Introduces fundamental built-in types used to represent integral values, characters, floating-point values, and boolean values.",
+              "relatedConcepts": [
+                "Comparison between procedural programming paradigm and object-oriented programming paradigm",
+                "Derived data types",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Derived data types",
+              "description": "Studies types formed from other types, including arrays, pointers, references, and function types.",
+              "relatedConcepts": [
+                "Basic data types",
+                "Constants",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Constants",
+              "description": "Explains values that are not modifiable through a given name, including constant declarations and their use in expressions.",
+              "relatedConcepts": [
+                "Derived data types",
+                "Tokens",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Tokens",
+              "description": "Introduces the smallest lexical units of a C++ program, such as identifiers, keywords, literals, operators, and punctuators.",
+              "relatedConcepts": [
+                "Constants",
+                "Keywords",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Keywords",
+              "description": "Covers reserved words with language-defined meaning and why they cannot be used as ordinary identifiers.",
+              "relatedConcepts": [
+                "Tokens",
+                "Identifiers and variables",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Identifiers and variables",
+              "description": "Explains naming rules, declarations, scopes, and the role of variables as named objects with types and lifetimes.",
+              "relatedConcepts": [
+                "Keywords",
+                "Concepts of an object and a class",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Concepts of an object and a class",
+              "description": "Introduces a class as a user-defined type and an object as an instance with state and behavior.",
+              "relatedConcepts": [
+                "Identifiers and variables",
+                "Difference between structure and class",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Difference between structure and class",
+              "description": "Compares C++ structures and classes, including their default member access and typical usage conventions.",
+              "relatedConcepts": [
+                "Concepts of an object and a class",
+                "Control structures",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Control structures",
+              "description": "Covers selection, iteration, and branching constructs that control the order in which statements execute.",
+              "relatedConcepts": [
+                "Difference between structure and class",
+                "Arrays and strings",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Arrays and strings",
+              "description": "Introduces indexed collections and text representation, including array bounds and common string operations.",
+              "relatedConcepts": [
+                "Control structures",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         },
         {
           "title": "Functions",
           "topics": [
-            "Function",
-            "Function prototype",
-            "Accessing function and utility function",
-            "Constructors and destructor",
-            "Types of constructor",
-            "Objects and memory requirements",
-            "Static members: variables and functions",
-            "Inline function",
-            "Friend function"
+            {
+              "name": "Function",
+              "description": "Explains function declarations, definitions, parameters, return values, and reusable program behavior.",
+              "relatedConcepts": [
+                "Function prototype",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Function prototype",
+              "description": "Covers function declarations that specify a function interface before its definition or use.",
+              "relatedConcepts": [
+                "Function",
+                "Accessing function and utility function",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Accessing function and utility function",
+              "description": "Studies invoking functions and organizing reusable helper operations for a program or class.",
+              "relatedConcepts": [
+                "Function prototype",
+                "Constructors and destructor",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Constructors and destructor",
+              "description": "Explains special member functions used to initialize an object and perform cleanup at the end of its lifetime.",
+              "relatedConcepts": [
+                "Accessing function and utility function",
+                "Types of constructor",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Types of constructor",
+              "description": "Compares constructor forms used for default initialization, parameter-based initialization, and copying objects.",
+              "relatedConcepts": [
+                "Constructors and destructor",
+                "Objects and memory requirements",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Objects and memory requirements",
+              "description": "Examines object storage, member data, object size, and the distinction between per-object and shared class data.",
+              "relatedConcepts": [
+                "Types of constructor",
+                "Static members: variables and functions",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Static members: variables and functions",
+              "description": "Covers class members associated with the class rather than a particular object, including shared variables and callable functions.",
+              "relatedConcepts": [
+                "Objects and memory requirements",
+                "Inline function",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Inline function",
+              "description": "Explains inline function declarations, their relationship to definitions, and the compiler’s freedom to inline calls.",
+              "relatedConcepts": [
+                "Static members: variables and functions",
+                "Friend function",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Friend function",
+              "description": "Introduces a non-member function granted access to a class’s private or protected members.",
+              "relatedConcepts": [
+                "Inline function",
+                "C++ declarations",
+                "types and objects",
+                "program structure"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         }
       ]
@@ -53,19 +309,186 @@
         {
           "title": "Topics",
           "topics": [
-            "Base class and derived class",
-            "Protected members",
-            "Relationship between base class and derived class",
-            "Constructor and destructor in derived class",
-            "Overriding member functions",
-            "Class hierarchies",
-            "Public and private inheritance",
-            "Types of inheritance",
-            "Ambiguity in multiple inheritance",
-            "Virtual base class",
-            "Abstract class",
-            "Friend class",
-            "Nested class"
+            {
+              "name": "Base class and derived class",
+              "description": "Introduces inheritance syntax and the roles of the class being extended and the class that inherits its interface or implementation.",
+              "relatedConcepts": [
+                "Protected members",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Protected members",
+              "description": "Explains protected access and how it differs from private and public access for derived classes.",
+              "relatedConcepts": [
+                "Base class and derived class",
+                "Relationship between base class and derived class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Relationship between base class and derived class",
+              "description": "Examines the is-a relationship, inherited members, and how a derived type relates to its base type.",
+              "relatedConcepts": [
+                "Protected members",
+                "Constructor and destructor in derived class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Constructor and destructor in derived class",
+              "description": "Covers base and derived object construction/destruction order and initialization of base subobjects.",
+              "relatedConcepts": [
+                "Relationship between base class and derived class",
+                "Overriding member functions",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Overriding member functions",
+              "description": "Explains replacing an inherited virtual member function with a matching derived-class implementation.",
+              "relatedConcepts": [
+                "Constructor and destructor in derived class",
+                "Class hierarchies",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Class hierarchies",
+              "description": "Studies tree-like relationships among base and derived classes and their effects on reuse and substitutability.",
+              "relatedConcepts": [
+                "Overriding member functions",
+                "Public and private inheritance",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Public and private inheritance",
+              "description": "Compares how public and private inheritance affect the accessibility of inherited interface members.",
+              "relatedConcepts": [
+                "Class hierarchies",
+                "Types of inheritance",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Types of inheritance",
+              "description": "Classifies inheritance structures such as single, multiple, multilevel, hierarchical, and hybrid forms.",
+              "relatedConcepts": [
+                "Public and private inheritance",
+                "Ambiguity in multiple inheritance",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Ambiguity in multiple inheritance",
+              "description": "Explains ambiguous member lookup when multiple base classes contribute same-named members or shared ancestors.",
+              "relatedConcepts": [
+                "Types of inheritance",
+                "Virtual base class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Virtual base class",
+              "description": "Covers virtual inheritance as a way to share a common base subobject in a diamond-shaped class hierarchy.",
+              "relatedConcepts": [
+                "Ambiguity in multiple inheritance",
+                "Abstract class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Abstract class",
+              "description": "Introduces classes that cannot be instantiated directly and provide an interface or common base for derived classes.",
+              "relatedConcepts": [
+                "Virtual base class",
+                "Friend class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Friend class",
+              "description": "Explains granting another class access to private and protected members through a friend declaration.",
+              "relatedConcepts": [
+                "Abstract class",
+                "Nested class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Nested class",
+              "description": "Covers declaring a class within another class and the scope and access relationship between the types.",
+              "relatedConcepts": [
+                "Friend class",
+                "base and derived classes",
+                "access control",
+                "class hierarchies"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         }
       ]
@@ -79,20 +502,200 @@
         {
           "title": "Topics",
           "topics": [
-            "Introduction to polymorphism",
-            "Types of polymorphism",
-            "Operator overloading",
-            "Concept of overloading",
-            "Overloading unary operators",
-            "Overloading binary operators",
-            "Function overloading",
-            "Run-time polymorphism",
-            "Pointers to base class",
-            "Virtual function and its significance in C++",
-            "Pure virtual function",
-            "Virtual table",
-            "Virtual destructor",
-            "Abstract base class"
+            {
+              "name": "Introduction to polymorphism",
+              "description": "Introduces one interface supporting different behavior depending on the operation or dynamic object type.",
+              "relatedConcepts": [
+                "Types of polymorphism",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Types of polymorphism",
+              "description": "Compares compile-time forms such as overloading with run-time polymorphism based on virtual dispatch.",
+              "relatedConcepts": [
+                "Introduction to polymorphism",
+                "Operator overloading",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Operator overloading",
+              "description": "Explains defining appropriate operator behavior for user-defined types while retaining operator syntax.",
+              "relatedConcepts": [
+                "Types of polymorphism",
+                "Concept of overloading",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Concept of overloading",
+              "description": "Introduces using the same function or operator name for multiple valid signatures or operand types.",
+              "relatedConcepts": [
+                "Operator overloading",
+                "Overloading unary operators",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Overloading unary operators",
+              "description": "Covers defining one-operand operators for user-defined types, including member and non-member forms where applicable.",
+              "relatedConcepts": [
+                "Concept of overloading",
+                "Overloading binary operators",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Overloading binary operators",
+              "description": "Covers defining two-operand operator behavior and how operands map to function parameters.",
+              "relatedConcepts": [
+                "Overloading unary operators",
+                "Function overloading",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Function overloading",
+              "description": "Explains declaring functions with the same name and distinct parameter lists and how overload resolution selects a candidate.",
+              "relatedConcepts": [
+                "Overloading binary operators",
+                "Run-time polymorphism",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Run-time polymorphism",
+              "description": "Studies selecting an overridden implementation at run time through a base interface and virtual dispatch.",
+              "relatedConcepts": [
+                "Function overloading",
+                "Pointers to base class",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Pointers to base class",
+              "description": "Explains base-class pointers referring to derived objects and their use with virtual member functions.",
+              "relatedConcepts": [
+                "Run-time polymorphism",
+                "Virtual function and its significance in C++",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Virtual function and its significance in C++",
+              "description": "Covers virtual member functions and dynamic dispatch through base-class references or pointers.",
+              "relatedConcepts": [
+                "Pointers to base class",
+                "Pure virtual function",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Pure virtual function",
+              "description": "Explains pure virtual declarations and their role in defining interfaces that derived classes implement.",
+              "relatedConcepts": [
+                "Virtual function and its significance in C++",
+                "Virtual table",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Virtual table",
+              "description": "Introduces the common implementation model compilers use to support virtual function dispatch; exact layout is implementation-specific.",
+              "relatedConcepts": [
+                "Pure virtual function",
+                "Virtual destructor",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Virtual destructor",
+              "description": "Explains why polymorphic base classes commonly need virtual destructors for correct destruction through base pointers.",
+              "relatedConcepts": [
+                "Virtual table",
+                "Abstract base class",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Abstract base class",
+              "description": "Studies a polymorphic interface base type containing at least one pure virtual function.",
+              "relatedConcepts": [
+                "Virtual destructor",
+                "overload resolution",
+                "dynamic dispatch",
+                "virtual functions"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         }
       ]
@@ -106,16 +709,144 @@
         {
           "title": "Topics",
           "topics": [
-            "Introduction to file handling",
-            "Types of files",
-            "Streams",
-            "Header files",
-            "File operations",
-            "Opening files",
-            "Reading from files",
-            "Writing to files",
-            "File pointers and navigation",
-            "Error handling"
+            {
+              "name": "Introduction to file handling",
+              "description": "Introduces persistent file input/output and the stream abstractions used by C++ file operations.",
+              "relatedConcepts": [
+                "Types of files",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Types of files",
+              "description": "Compares common text and binary file representations and the implications for reading and writing.",
+              "relatedConcepts": [
+                "Introduction to file handling",
+                "Streams",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Streams",
+              "description": "Explains stream objects as flows of input or output and their state during I/O operations.",
+              "relatedConcepts": [
+                "Types of files",
+                "Header files",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Header files",
+              "description": "Covers declarations and facilities made available to a translation unit through included headers.",
+              "relatedConcepts": [
+                "Streams",
+                "File operations",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "File operations",
+              "description": "Surveys opening, reading, writing, positioning, closing, and checking file streams.",
+              "relatedConcepts": [
+                "Header files",
+                "Opening files",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Opening files",
+              "description": "Explains associating file stream objects with paths, open modes, and checking whether opening succeeded.",
+              "relatedConcepts": [
+                "File operations",
+                "Reading from files",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Reading from files",
+              "description": "Covers extracting formatted or unformatted data from input file streams and detecting end or failure states.",
+              "relatedConcepts": [
+                "Opening files",
+                "Writing to files",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Writing to files",
+              "description": "Explains inserting formatted or unformatted data into output file streams and checking write status.",
+              "relatedConcepts": [
+                "Reading from files",
+                "File pointers and navigation",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "File pointers and navigation",
+              "description": "Covers stream get/put positions and operations used to query or move within a file.",
+              "relatedConcepts": [
+                "Writing to files",
+                "Error handling",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Error handling",
+              "description": "Explains checking stream state and responding to failures during file input/output.",
+              "relatedConcepts": [
+                "File pointers and navigation",
+                "file streams",
+                "input/output state",
+                "file operations"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         }
       ]
@@ -129,25 +860,203 @@
         {
           "title": "Exception Handling",
           "topics": [
-            "Exception handling in C++",
-            "Try-catch block",
-            "Throwing exceptions",
-            "Built-in types",
-            "Standard exceptions",
-            "Custom exceptions"
+            {
+              "name": "Exception handling in C++",
+              "description": "Introduces reporting and handling exceptional conditions separately from the normal control path.",
+              "relatedConcepts": [
+                "Try-catch block",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Try-catch block",
+              "description": "Explains protected try regions and matching exception handlers using catch clauses.",
+              "relatedConcepts": [
+                "Exception handling in C++",
+                "Throwing exceptions",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Throwing exceptions",
+              "description": "Covers raising an exception with throw and propagating it toward a matching handler.",
+              "relatedConcepts": [
+                "Try-catch block",
+                "Built-in types",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Built-in types",
+              "description": "Studies throwing and catching built-in C++ values as exception objects.",
+              "relatedConcepts": [
+                "Throwing exceptions",
+                "Standard exceptions",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Standard exceptions",
+              "description": "Introduces the standard exception hierarchy and commonly used exception types from the library.",
+              "relatedConcepts": [
+                "Built-in types",
+                "Custom exceptions",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Custom exceptions",
+              "description": "Explains defining application-specific exception types and reporting exceptional conditions with them.",
+              "relatedConcepts": [
+                "Standard exceptions",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         },
         {
           "title": "Templates",
           "topics": [
-            "Define templates",
-            "Template variables",
-            "Default template arguments",
-            "Template non-type arguments",
-            "Template argument deduction",
-            "Function template argument deduction",
-            "Class templates",
-            "Variable templates"
+            {
+              "name": "Define templates",
+              "description": "Introduces template declarations that parameterize functions or types for reusable generic code.",
+              "relatedConcepts": [
+                "Template variables",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Template variables",
+              "description": "Covers variable declarations parameterized by template arguments.",
+              "relatedConcepts": [
+                "Define templates",
+                "Default template arguments",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Default template arguments",
+              "description": "Explains default values for template parameters and when callers may omit explicit arguments.",
+              "relatedConcepts": [
+                "Template variables",
+                "Template non-type arguments",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Template non-type arguments",
+              "description": "Studies template parameters that represent permitted compile-time values rather than types.",
+              "relatedConcepts": [
+                "Default template arguments",
+                "Template argument deduction",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Template argument deduction",
+              "description": "Introduces determining template parameters from function arguments or other deduction contexts.",
+              "relatedConcepts": [
+                "Template non-type arguments",
+                "Function template argument deduction",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Function template argument deduction",
+              "description": "Covers deduction of function-template parameters from call arguments and deduction limitations.",
+              "relatedConcepts": [
+                "Template argument deduction",
+                "Class templates",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Class templates",
+              "description": "Explains defining and using classes parameterized by types or other template arguments.",
+              "relatedConcepts": [
+                "Function template argument deduction",
+                "Variable templates",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Variable templates",
+              "description": "Covers variable declarations parameterized by template arguments, including specializations where appropriate.",
+              "relatedConcepts": [
+                "Class templates",
+                "generic programming",
+                "template parameters",
+                "exception propagation"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         }
       ]
@@ -161,48 +1070,324 @@
         {
           "title": "Topics",
           "topics": [
-            "Basic concepts of STL",
-            "STL components",
-            "STL iterators",
-            "Container adapters"
+            {
+              "name": "Basic concepts of STL",
+              "description": "Introduces the Standard Template Library as reusable generic containers, iterators, algorithms, and related components.",
+              "relatedConcepts": [
+                "STL components",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "STL components",
+              "description": "Surveys the library roles of containers, iterators, algorithms, and function objects or callable operations.",
+              "relatedConcepts": [
+                "Basic concepts of STL",
+                "STL iterators",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "STL iterators",
+              "description": "Explains iterator objects as traversal and algorithm access abstractions over container elements.",
+              "relatedConcepts": [
+                "STL components",
+                "Container adapters",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Container adapters",
+              "description": "Covers adaptor interfaces such as queue-like or stack-like access layered over an underlying container.",
+              "relatedConcepts": [
+                "STL iterators",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         },
         {
           "title": "Sequence Containers",
           "topics": [
-            "Array",
-            "Vector",
-            "Queue",
-            "Deque",
-            "Forward_list"
+            {
+              "name": "Array",
+              "description": "Studies the fixed-size std::array sequence container and its relation to built-in arrays and standard algorithms.",
+              "relatedConcepts": [
+                "Vector",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Vector",
+              "description": "Explains std::vector as a resizable contiguous sequence container and its common element and capacity operations.",
+              "relatedConcepts": [
+                "Array",
+                "Queue",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Queue",
+              "description": "Covers the queue topic as listed by the supplied syllabus and its first-in, first-out access model.",
+              "relatedConcepts": [
+                "Vector",
+                "Deque",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "beginner",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Deque",
+              "description": "Explains std::deque as a double-ended sequence supporting efficient insertion and removal at both ends.",
+              "relatedConcepts": [
+                "Queue",
+                "Forward_list",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Forward_list",
+              "description": "Studies std::forward_list as a singly linked forward sequence with operations suited to one-way traversal.",
+              "relatedConcepts": [
+                "Deque",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         },
         {
           "title": "Associative Containers",
           "topics": [
-            "Set",
-            "Multiset",
-            "Map",
-            "Multimap"
+            {
+              "name": "Set",
+              "description": "Explains std::set as an ordered associative container of unique keys.",
+              "relatedConcepts": [
+                "Multiset",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Multiset",
+              "description": "Covers std::multiset as an ordered associative container that permits equivalent keys.",
+              "relatedConcepts": [
+                "Set",
+                "Map",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Map",
+              "description": "Explains std::map as an ordered associative container of unique keys mapped to values.",
+              "relatedConcepts": [
+                "Multiset",
+                "Multimap",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Multimap",
+              "description": "Covers std::multimap as an ordered associative container that permits multiple values for equivalent keys.",
+              "relatedConcepts": [
+                "Map",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         },
         {
           "title": "Unordered Associative Containers",
           "topics": [
-            "Unordered_set",
-            "Unordered_multiset",
-            "Unordered_map",
-            "Unordered_multimap"
+            {
+              "name": "Unordered_set",
+              "description": "Explains std::unordered_set as a hash-based associative container of unique keys.",
+              "relatedConcepts": [
+                "Unordered_multiset",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Unordered_multiset",
+              "description": "Covers std::unordered_multiset as a hash-based associative container that permits equivalent keys.",
+              "relatedConcepts": [
+                "Unordered_set",
+                "Unordered_map",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Unordered_map",
+              "description": "Explains std::unordered_map as a hash-based associative container mapping unique keys to values.",
+              "relatedConcepts": [
+                "Unordered_multiset",
+                "Unordered_multimap",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "Unordered_multimap",
+              "description": "Covers std::unordered_multimap as a hash-based associative container allowing multiple values for equivalent keys.",
+              "relatedConcepts": [
+                "Unordered_map",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "advanced",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         },
         {
           "title": "Other Topics",
           "topics": [
-            "Applications of STL",
-            "STL sorting algorithms",
-            "STL searching algorithms",
-            "STL copying algorithms",
-            "STL counting algorithms"
+            {
+              "name": "Applications of STL",
+              "description": "Examines using standard containers and algorithms to implement common data-processing tasks without manual infrastructure.",
+              "relatedConcepts": [
+                "STL sorting algorithms",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "STL sorting algorithms",
+              "description": "Covers standard algorithms for ordering ranges, their iterator requirements, and comparator use.",
+              "relatedConcepts": [
+                "Applications of STL",
+                "STL searching algorithms",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "STL searching algorithms",
+              "description": "Studies standard algorithms that locate values or patterns in ranges and their iterator requirements.",
+              "relatedConcepts": [
+                "STL sorting algorithms",
+                "STL copying algorithms",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "STL copying algorithms",
+              "description": "Covers algorithms that copy or transform values between ranges and the importance of valid output ranges.",
+              "relatedConcepts": [
+                "STL searching algorithms",
+                "STL counting algorithms",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            },
+            {
+              "name": "STL counting algorithms",
+              "description": "Explains algorithms that count matching values or predicates over iterator ranges.",
+              "relatedConcepts": [
+                "STL copying algorithms",
+                "containers",
+                "iterators",
+                "standard algorithms"
+              ],
+              "difficulty": "intermediate",
+              "difficultySource": "Provisional teaching estimate; not specified in the official syllabus.",
+              "detailedMaterialStatus": "not-authored"
+            }
           ]
         }
       ]

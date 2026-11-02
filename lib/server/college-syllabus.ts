@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import syllabus from "@/knowledge-base/syllabus/college-oops-syllabus.json";
 import type { ChatMessage } from "@/types/chat";
 
@@ -92,7 +94,7 @@ const TOPIC_ALIASES: Record<string, string[]> = {
   "Class templates": ["class template"],
   "Variable templates": ["variable template"],
   "Basic concepts of STL": ["stl", "standard template library"],
-  "STL components": ["stl component", "containers algorithms iterators"],
+  "STL components": ["stl component", "stl containers", "containers", "algorithms and iterators"],
   "STL iterators": ["iterator", "iterators"],
   "Container adapters": ["container adaptor", "stack queue priority queue"],
   "Array": ["std::array"],
@@ -115,6 +117,35 @@ const TOPIC_ALIASES: Record<string, string[]> = {
   "STL counting algorithms": ["stl count", "std::count", "counting algorithms"],
 };
 
+const UNIT_GUIDES: Record<number, string> = {
+  1: "unit-1-fundamentals.md",
+  2: "unit-2-inheritance.md",
+  3: "unit-3-polymorphism.md",
+  4: "unit-4-files-streams.md",
+  5: "unit-5-exceptions-templates.md",
+  6: "unit-6-stl.md",
+};
+
+const UNIT_EXAMS: Record<number, string> = {
+  1: "unit-1-fundamentals.md",
+  2: "unit-2-inheritance.md",
+  3: "unit-3-polymorphism.md",
+  4: "unit-4-files-streams.md",
+  5: "unit-5-exceptions-templates.md",
+  6: "unit-6-stl.md",
+};
+
+const UNIT_PROGRAMS: Record<number, string[]> = {
+  1: ["unit-1-classes-and-members.cpp"],
+  2: ["unit-2-inheritance.cpp"],
+  3: ["unit-3-polymorphism.cpp"],
+  4: ["unit-4-file-streams.cpp"],
+  5: ["unit-5-exceptions-templates.cpp"],
+  6: ["unit-6-stl-containers.cpp", "unit-6-stl-algorithms.cpp"],
+};
+
+const MAX_RETRIEVED_MATERIAL_CHARS = 12_000;
+
 function normalize(value: string): string {
   return value
     .toLowerCase()
@@ -122,6 +153,87 @@ function normalize(value: string): string {
     .replace(/[^a-z0-9+#\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function getTopicMaterial(unitNumber: number, topicName: string): string {
+  const filename = UNIT_GUIDES[unitNumber];
+  if (!filename) return "";
+
+  const guide = readFileSync(
+    join(process.cwd(), "knowledge-base", "units", filename),
+    "utf8",
+  );
+  const lines = guide.split(/\r?\n/);
+  const heading = `### ${topicName}`;
+  const start = lines.indexOf(heading);
+  if (start < 0) return "";
+
+  const end = lines.findIndex(
+    (line, index) => index > start && /^#{1,3} /.test(line),
+  );
+  return lines
+    .slice(start, end < 0 ? lines.length : end)
+    .join("\n")
+    .slice(0, MAX_RETRIEVED_MATERIAL_CHARS);
+}
+
+function isFollowUp(text: string): boolean {
+  return /\b(this|that|it|simpler|another example|line by line|previous program|explain more|continue)\b/i.test(
+    text,
+  );
+}
+
+function getLearningIntent(text: string): string | null {
+  if (/\b(viva|oral questions?)\b/i.test(text)) return "viva";
+  if (/\b(multiple.choice|mcq|quiz|test my knowledge)\b/i.test(text)) return "quiz";
+  if (/\b(practical|program|code|example|programming question|coding question)\b/i.test(text)) return "practical";
+  if (/\b(exam|marks?|important questions?)\b/i.test(text)) return "exam";
+  return null;
+}
+
+function getExamMaterial(unitNumber: number): string {
+  const filename = UNIT_EXAMS[unitNumber];
+  if (!filename) throw new Error(`Unknown syllabus unit ${unitNumber}`);
+  return readFileSync(
+    join(process.cwd(), "knowledge-base", "exams", filename),
+    "utf8",
+  ).slice(0, MAX_RETRIEVED_MATERIAL_CHARS);
+}
+
+function getPracticalMaterial(unitNumber: number): string {
+  const filenames = UNIT_PROGRAMS[unitNumber];
+  if (!filenames) throw new Error(`Unknown syllabus unit ${unitNumber}`);
+  const guide = readFileSync(
+    join(process.cwd(), "knowledge-base", "programs", "README.md"),
+    "utf8",
+  );
+  const lines = guide.split(/\r?\n/);
+  const start = lines.findIndex((line) => line.startsWith(`## Unit ${unitNumber} `));
+  if (start < 0) return "";
+  const end = lines.findIndex(
+    (line, index) => index > start && line.startsWith("## Unit "),
+  );
+  const introduction = lines
+    .slice(start, end < 0 ? lines.length : end)
+    .join("\n")
+    .slice(0, MAX_RETRIEVED_MATERIAL_CHARS);
+  const programs = filenames.map((filename) => {
+    const source = readFileSync(
+      join(process.cwd(), "knowledge-base", "programs", filename),
+      "utf8",
+    );
+    return `### Complete program: ${filename}\n\`\`\`cpp\n${source}\n\`\`\``;
+  });
+  return [introduction, ...programs].join("\n\n");
+}
+
+function formatTopicMaterial(unit: SyllabusUnit, topics: string[]): string {
+  const material = topics
+    .map((topic) => getTopicMaterial(unit.number, topic))
+    .filter(Boolean);
+  return material.length
+    ? `Retrieved topic teaching material:\n${material.join("\n\n")}`
+    : "";
 }
 
 function hasPhrase(text: string, phrase: string): boolean {
@@ -145,11 +257,11 @@ function getExplicitUnitNumbers(text: string): number[] {
 function getTopicRecords(): SyllabusTopic[] {
   return syllabus.units.flatMap((unit) =>
     unit.sections.flatMap((section) =>
-      section.topics.map((title) => ({
+      section.topics.map((topic) => ({
         unit,
         section,
-        title,
-        aliases: TOPIC_ALIASES[title] ?? [],
+        title: topic.name,
+        aliases: TOPIC_ALIASES[topic.name] ?? [],
       })),
     ),
   );
@@ -158,10 +270,20 @@ function getTopicRecords(): SyllabusTopic[] {
 function formatUnit(unit: SyllabusUnit, selected?: Set<string>): string {
   const sections = unit.sections.map((section) => {
     const topics = section.topics.filter(
-      (topic) => !selected || selected.has(`${unit.number}:${topic}`),
+      (topic) => !selected || selected.has(`${unit.number}:${topic.name}`),
     );
     if (topics.length === 0) return "";
-    return `### ${section.title}\n${topics.map((topic) => `- ${topic}`).join("\n")}`;
+    return `### ${section.title}\n${topics
+      .map((topic) =>
+        [
+          `- Official topic: ${topic.name}`,
+          `  - Description: ${topic.description}`,
+          `  - Related C++ concepts: ${topic.relatedConcepts.join(", ")}`,
+          `  - Difficulty: ${topic.difficulty} (provisional estimate; not specified by the college)`,
+          `  - Detailed teaching material: ${topic.detailedMaterialStatus}`,
+        ].join("\n"),
+      )
+      .join("\n")}`;
   });
 
   return [
@@ -177,31 +299,55 @@ export function retrieveCollegeSyllabusContext(
     .filter((message) => message.role === "user")
     .slice(-4);
   const currentQuestion = userMessages.at(-1)?.content ?? "";
-  const explicitUnits = getExplicitUnitNumbers(currentQuestion);
+  let topicQuestion = currentQuestion;
+  let usedPreviousContext = false;
+  if (isFollowUp(currentQuestion) && userMessages.length > 1) {
+    topicQuestion = userMessages.at(-2)?.content ?? currentQuestion;
+    usedPreviousContext = true;
+  }
+  const explicitUnits = getExplicitUnitNumbers(topicQuestion);
 
-  const sourceNotice = `Official source: ${syllabus.college}, Department of ${syllabus.department}, Pattern ${syllabus.pattern}. The supplied syllabus totals ${syllabus.totalDurationHours} hours across ${syllabus.totalUnits} units. The JSON is the authoritative official topic list.`;
+  const sourceNotice = `Official source: ${syllabus.college}, Department of ${syllabus.department}, Pattern ${syllabus.pattern}. The supplied syllabus totals ${syllabus.totalDurationHours} hours across ${syllabus.totalUnits} units. The JSON topic names are the authoritative official topic list. Descriptions, related concepts, and difficulty estimates are project-created organizational metadata, not college-provided statements.`;
 
   if (explicitUnits.length > 0) {
     const units = syllabus.units.filter((unit) =>
       explicitUnits.includes(unit.number),
     );
+    const intent = getLearningIntent(currentQuestion);
     return [
       sourceNotice,
       "The student explicitly requested these complete official unit outlines:",
       ...units.map((unit) => formatUnit(unit)),
+      ...units.map((unit) =>
+        formatTopicMaterial(
+          unit,
+          unit.sections.flatMap((section) => section.topics.map((topic) => topic.name)),
+        ),
+      ),
+      ...(intent === "exam" || intent === "viva" || intent === "quiz"
+        ? units.map((unit) => getExamMaterial(unit.number))
+        : []),
+      ...(intent === "practical"
+        ? units.map((unit) => getPracticalMaterial(unit.number))
+        : []),
+      intent
+        ? `The student requested ${intent} preparation. Provide original study help at the requested level; do not claim questions are guaranteed to appear.`
+        : "",
+      usedPreviousContext
+        ? "This is a conversational follow-up. Answer its requested style or depth while preserving the previous learning topic."
+        : "",
       "Treat the topic names above as the complete official scope supplied by the college. Do not add general topics to that official list.",
     ].join("\n\n");
   }
 
   const records = getTopicRecords();
-  const searchText = currentQuestion;
+  const searchText = topicQuestion;
   let matches = records.filter((record) =>
     [record.title, ...record.aliases].some((phrase) =>
       hasPhrase(searchText, phrase),
     ),
   );
 
-  let usedPreviousContext = false;
   if (matches.length === 0 && userMessages.length > 1) {
     const previousQuestions = userMessages.slice(0, -1).reverse();
     for (const previous of previousQuestions) {
@@ -220,6 +366,9 @@ export function retrieveCollegeSyllabusContext(
   if (matches.length === 0) {
     return [
       sourceNotice,
+      usedPreviousContext
+        ? "The latest question is a follow-up. Use the recent conversation as context, but no exact official topic could be recovered."
+        : "",
       "No specific official syllabus topic matched the current question. Answer using general C++ knowledge. Do not claim that a general topic is part of this college syllabus without an exact match in the official topic list.",
     ].join("\n\n");
   }
@@ -243,6 +392,28 @@ export function retrieveCollegeSyllabusContext(
         selectedTopics.get(number),
       ),
     ),
+    ...selectedUnits.map((number) =>
+      formatTopicMaterial(
+        syllabus.units.find((unit) => unit.number === number)!,
+        [...(selectedTopics.get(number) ?? [])].map((key) =>
+          key.slice(`${number}:`.length),
+        ),
+      ),
+    ),
+    ...(selectedUnits.flatMap((number) => {
+      const intent = getLearningIntent(currentQuestion);
+      if (intent === "exam" || intent === "viva" || intent === "quiz") {
+        return [getExamMaterial(number)];
+      }
+      if (intent === "practical") return [getPracticalMaterial(number)];
+      return [];
+    })),
+    getLearningIntent(currentQuestion)
+      ? `The student requested ${getLearningIntent(currentQuestion)} preparation. Match requested answer depth and label supplementary knowledge clearly.`
+      : "",
+    usedPreviousContext
+      ? "This is a conversational follow-up. Answer its requested style or depth while preserving the previous learning topic."
+      : "",
     "Explain matched topics as syllabus topics. If adding useful material not listed above, label it clearly as supplementary general C++ knowledge rather than official syllabus content.",
   ].join("\n\n");
 }

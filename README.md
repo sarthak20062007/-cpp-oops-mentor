@@ -44,6 +44,8 @@ and viva practice.
 npm run typecheck
 npm run lint
 npm run build
+npm run knowledge:check
+npm run test:chat-retrieval
 ```
 
 Chat requests are sent server-side to OpenRouter. The API key is never sent to

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint app components lib types",
     "typecheck": "tsc --noEmit",
-    "security:staged": "node scripts/check-staged-secrets.mjs"
+    "security:staged": "node scripts/check-staged-secrets.mjs",
+    "knowledge:check": "node scripts/check-learning-material.mjs",
+    "test:chat-retrieval": "node scripts/test-chat-retrieval.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
