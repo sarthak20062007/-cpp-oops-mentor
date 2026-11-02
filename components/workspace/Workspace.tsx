@@ -13,7 +13,6 @@ import {
   ACTIVE_CHAT_STORAGE_KEY,
   CHAT_STORAGE_KEY,
   createChatId,
-  createMockResponse,
   getConversationTitle,
   initialConversation,
   isChatConversation,
@@ -43,6 +42,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
     useState(initialConversation.id);
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
+  const [chatError, setChatError] = useState<string | null>(null);
   const [storageReady, setStorageReady] = useState(false);
   const [clearConfirmationOpen, setClearConfirmationOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -53,7 +53,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const responseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const activeRequest = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const activeConversation = conversations.find(
     (conversation) => conversation.id === activeConversationId,
@@ -110,10 +110,8 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
   }, [loading, messages]);
 
   const cancelPendingResponse = useCallback(() => {
-    if (responseTimer.current) {
-      clearTimeout(responseTimer.current);
-      responseTimer.current = null;
-    }
+    activeRequest.current?.abort();
+    activeRequest.current = null;
     setLoading(false);
   }, []);
 
@@ -128,6 +126,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
     setConversations((current) => [newConversation, ...current]);
     setActiveConversationId(newConversation.id);
     setDraft("");
+    setChatError(null);
     setLoading(false);
     setDrawerOpen(false);
     setShortcutsOpen(false);
@@ -154,6 +153,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
       ),
     );
     setDraft("");
+    setChatError(null);
     setClearConfirmationOpen(false);
   }, [activeConversationId, cancelPendingResponse]);
 
@@ -162,6 +162,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
       cancelPendingResponse();
       setActiveConversationId(id);
       setDraft("");
+      setChatError(null);
       setDrawerOpen(false);
       setShortcutsOpen(false);
     },
@@ -180,18 +181,25 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
     setSidebarMode((mode) => (mode === "collapsed" ? "default" : "collapsed"));
   }, []);
 
-  const sendMessage = useCallback(() => {
+  const sendMessage = useCallback(async () => {
     const content = draft.trim();
     if (!content || loading || !activeConversationId) return;
 
     const conversationId = activeConversationId;
+    const userMessage: ChatMessageData = {
+      id: createChatId(),
+      role: "user",
+      content,
+    };
+    const requestMessages = [
+      ...(conversations.find((conversation) => conversation.id === conversationId)
+        ?.messages ?? []),
+      userMessage,
+    ];
     setConversations((current) =>
       current.map((conversation) => {
         if (conversation.id !== conversationId) return conversation;
-        const messages = [
-          ...conversation.messages,
-          { id: createChatId(), role: "user" as const, content },
-        ];
+        const messages = [...conversation.messages, userMessage];
         return {
           ...conversation,
           title: getConversationTitle(messages),
@@ -201,9 +209,48 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
       }),
     );
     setDraft("");
+    setChatError(null);
     setLoading(true);
-    if (responseTimer.current) clearTimeout(responseTimer.current);
-    responseTimer.current = setTimeout(() => {
+    const controller = new AbortController();
+    activeRequest.current = controller;
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: requestMessages.map(({ role, content: messageContent }) => ({
+            role,
+            content: messageContent,
+          })),
+        }),
+        signal: controller.signal,
+      });
+      let result: unknown;
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("The chat service returned an invalid response.");
+      }
+
+      if (!result || typeof result !== "object") {
+        throw new Error("The chat service returned an invalid response.");
+      }
+
+      if (!response.ok) {
+        const errorMessage =
+          "error" in result && typeof result.error === "string"
+            ? result.error
+            : "The chat request failed. Please try again.";
+        throw new Error(errorMessage);
+      }
+
+      if (!("message" in result) || typeof result.message !== "string") {
+        throw new Error("The chat service returned an invalid response.");
+      }
+
+      if (controller.signal.aborted) return;
+      const assistantContent = result.message;
       setConversations((current) =>
         current.map((conversation) =>
           conversation.id === conversationId
@@ -214,7 +261,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
                   {
                     id: createChatId(),
                     role: "assistant",
-                    content: createMockResponse(content),
+                    content: assistantContent,
                   },
                 ],
                 updatedAt: Date.now(),
@@ -222,14 +269,27 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
             : conversation,
         ),
       );
-      setLoading(false);
-      responseTimer.current = null;
-    }, 700);
-  }, [activeConversationId, draft, loading]);
+    } catch (error) {
+      if (!controller.signal.aborted) {
+        setChatError(
+          error instanceof TypeError
+            ? "Unable to connect to the chat service. Check your connection and try again."
+            : error instanceof Error
+              ? error.message
+              : "The response could not be generated. Please try again.",
+        );
+      }
+    } finally {
+      if (activeRequest.current === controller) {
+        activeRequest.current = null;
+        setLoading(false);
+      }
+    }
+  }, [activeConversationId, conversations, draft, loading]);
 
   useEffect(
     () => () => {
-      if (responseTimer.current) clearTimeout(responseTimer.current);
+      activeRequest.current?.abort();
     },
     [],
   );
@@ -311,6 +371,11 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
                         message={message}
                       />
                     ))}
+                    {chatError && (
+                      <p className="chat-error" role="alert">
+                        {chatError}
+                      </p>
+                    )}
                     {loading && (
                       <div className="loading-indicator" role="status">
                         <span className="assistant-avatar" aria-hidden="true">

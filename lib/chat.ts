@@ -119,35 +119,3 @@ export function getConversationTitle(messages: ChatMessage[]): string {
     ? `${firstUserMessage.content.slice(0, 44).trimEnd()}…`
     : firstUserMessage.content;
 }
-
-export function createMockResponse(prompt: string): string {
-  if (/constexpr|consteval/i.test(prompt)) {
-    return `\`constexpr\` allows an expression or function to be evaluated at compile time when its inputs are constant expressions, but it can also run at runtime. \`consteval\` (C++20) makes a function immediate: every call must be evaluated at compile time.
-
-Use \`constexpr\` when either compile-time or runtime use is useful; choose \`consteval\` when compile-time evaluation is part of the API contract.
-
-| Keyword | Compile-time call required? | Runtime call allowed? |
-| --- | --- | --- |
-| \`constexpr\` | No | Yes |
-| \`consteval\` | Yes | No |
-`;
-  }
-
-  if (/coroutine|co_await/i.test(prompt)) {
-    return `A coroutine is a function that can suspend and later resume. In C++, \`co_await\` suspends the current coroutine until its awaitable says it is ready, then resumes it through the awaiter's protocol.
-
-The compiler transforms the function into a state machine. A promise type defines how the coroutine starts, suspends, returns, and reports errors. The syntax is built into the language, while scheduling and task ownership come from libraries.
-`;
-  }
-
-  if (/raii|resource|smart pointer/i.test(prompt)) {
-    return `RAII (Resource Acquisition Is Initialization) ties a resource's lifetime to an object's lifetime. The constructor acquires the resource, and the destructor releases it, including when a scope exits because of an exception.
-
-Standard types such as \`std::unique_ptr\`, \`std::lock_guard\`, and \`std::vector\` use this model. Their cleanup is deterministic and does not require a separate manual release path.
-`;
-  }
-
-  return `\`std::move\` is a cast, not an operation that moves data by itself. It converts its argument to an rvalue expression so the selected type can use a move constructor or move assignment operator.
-
-For a \`std::vector\`, moving commonly transfers its allocation in constant time. The source remains valid after the move, but its contents are unspecified.`;
-}

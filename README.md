@@ -10,6 +10,7 @@ and viva practice.
 
 - Node.js 20 or newer
 - npm
+- An OpenRouter API key
 
 ## Setup
 
@@ -19,7 +20,17 @@ and viva practice.
    npm install
    ```
 
-2. Start the development server:
+2. Copy `.env.example` to `.env.local` and set your OpenRouter API key:
+
+   ```dotenv
+   OPENROUTER_API_KEY=your-api-key
+   OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+   OPENROUTER_MODEL=nvidia/nemotron-3.5-super-vl:free
+   ```
+
+   Keep `.env.local` private; it is excluded from Git.
+
+3. Start the development server:
 
    ```bash
    npm run dev
@@ -35,5 +46,5 @@ npm run lint
 npm run build
 ```
 
-Chat replies currently use local mock responses. No external AI provider is
-configured.
+Chat requests are sent server-side to OpenRouter. The API key is never sent to
+the browser.
