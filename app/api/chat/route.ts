@@ -1,4 +1,5 @@
 import OpenAI, { APIError } from "openai";
+import { retrieveCollegeSyllabusContext } from "@/lib/server/college-syllabus";
 
 export const runtime = "nodejs";
 
@@ -154,6 +155,8 @@ export async function POST(request: Request) {
     );
   }
 
+  const syllabusContext = retrieveCollegeSyllabusContext(messages);
+
   try {
     const client = new OpenAI({
       apiKey,
@@ -167,6 +170,10 @@ export async function POST(request: Request) {
         model: process.env.OPENROUTER_MODEL?.trim() || DEFAULT_MODEL,
         messages: [
           { role: "system", content: SYSTEM_INSTRUCTIONS },
+          {
+            role: "system",
+            content: `College syllabus retrieval context:\n${syllabusContext}\n\nTreat the supplied college topic list as authoritative and do not add unlisted subjects to it. When teaching a matched topic, provide the requested explanation using reliable general C++ knowledge; do not imply that model-generated examples or details were supplied by the college. For a general question with no syllabus match, answer it as general C++ knowledge. Clearly label supplementary general knowledge when a response combines it with official syllabus scope.`,
+          },
           ...messages,
         ],
       },

@@ -17,6 +17,7 @@ const credentialPatterns = [
   /sk-or-v1-[A-Za-z0-9_-]{20,}/,
   /\bsk-(?:proj-)?[A-Za-z0-9_-]{24,}/,
   /\bauthorization\s*[:=]\s*["']Bearer\s+[A-Za-z0-9._~+/-]{16,}["']/i,
+  /^\s*(?:export\s+)?[A-Z0-9_]*(?:API[_-]?KEY|SECRET(?:[_-]?KEY)?|ACCESS[_-]?TOKEN|PASSWORD)[A-Z0-9_]*\s*=\s*(?!["']?(?:your\b|replace\b|example\b|placeholder\b|<))(?:"[^"\r\n]{12,}"|'[^'\r\n]{12,}'|[^\s#]{16,})/i,
   /\b(?:api[_-]?key|secret(?:[_-]?key)?|access[_-]?token|password)\b\s*[:=]\s*(["'])(?!your\b|replace\b|example\b|placeholder\b|<)[^"'\r\n]{12,}\1/i,
 ];
 

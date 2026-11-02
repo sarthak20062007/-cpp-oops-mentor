@@ -52,6 +52,15 @@ client IP in each server process. This in-memory limit is best-effort; configure
 your hosting proxy to overwrite `X-Real-IP` or `X-Forwarded-For` with a
 trusted client address for it to be effective.
 
+## College syllabus knowledge base
+
+The official 2025 Zeal College of Engineering & Research, Pune syllabus is
+stored in [`knowledge-base/syllabus/college-oops-syllabus.json`](./knowledge-base/syllabus/college-oops-syllabus.json).
+The server retrieves matching unit/topic context before sending a chat request
+to OpenRouter. Unit guides and the note-authoring template are documented in
+[`knowledge-base/README.md`](./knowledge-base/README.md); detailed college-
+reviewed teaching notes can be added there without changing the frontend.
+
 ## Git secret check
 
 The pre-commit hook rejects staged environment files and scans staged content

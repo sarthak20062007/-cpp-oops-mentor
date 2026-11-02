@@ -1,0 +1,211 @@
+{
+  "college": "Zeal College of Engineering & Research, Pune",
+  "department": "Artificial Intelligence and Data Science",
+  "course": "C++ (OOPs)",
+  "pattern": "2025",
+  "totalDurationHours": 42,
+  "totalUnits": 6,
+  "units": [
+    {
+      "id": "unit-1",
+      "number": 1,
+      "title": "FUNDAMENTALS OF OBJECT-ORIENTED PROGRAMMING",
+      "durationHours": 7,
+      "sections": [
+        {
+          "title": "Introduction",
+          "topics": [
+            "Comparison between procedural programming paradigm and object-oriented programming paradigm",
+            "Basic data types",
+            "Derived data types",
+            "Constants",
+            "Tokens",
+            "Keywords",
+            "Identifiers and variables",
+            "Concepts of an object and a class",
+            "Difference between structure and class",
+            "Control structures",
+            "Arrays and strings"
+          ]
+        },
+        {
+          "title": "Functions",
+          "topics": [
+            "Function",
+            "Function prototype",
+            "Accessing function and utility function",
+            "Constructors and destructor",
+            "Types of constructor",
+            "Objects and memory requirements",
+            "Static members: variables and functions",
+            "Inline function",
+            "Friend function"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-2",
+      "number": 2,
+      "title": "INHERITANCE",
+      "durationHours": 7,
+      "sections": [
+        {
+          "title": "Topics",
+          "topics": [
+            "Base class and derived class",
+            "Protected members",
+            "Relationship between base class and derived class",
+            "Constructor and destructor in derived class",
+            "Overriding member functions",
+            "Class hierarchies",
+            "Public and private inheritance",
+            "Types of inheritance",
+            "Ambiguity in multiple inheritance",
+            "Virtual base class",
+            "Abstract class",
+            "Friend class",
+            "Nested class"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-3",
+      "number": 3,
+      "title": "POLYMORPHISM",
+      "durationHours": 7,
+      "sections": [
+        {
+          "title": "Topics",
+          "topics": [
+            "Introduction to polymorphism",
+            "Types of polymorphism",
+            "Operator overloading",
+            "Concept of overloading",
+            "Overloading unary operators",
+            "Overloading binary operators",
+            "Function overloading",
+            "Run-time polymorphism",
+            "Pointers to base class",
+            "Virtual function and its significance in C++",
+            "Pure virtual function",
+            "Virtual table",
+            "Virtual destructor",
+            "Abstract base class"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-4",
+      "number": 4,
+      "title": "FILES AND STREAMS",
+      "durationHours": 7,
+      "sections": [
+        {
+          "title": "Topics",
+          "topics": [
+            "Introduction to file handling",
+            "Types of files",
+            "Streams",
+            "Header files",
+            "File operations",
+            "Opening files",
+            "Reading from files",
+            "Writing to files",
+            "File pointers and navigation",
+            "Error handling"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-5",
+      "number": 5,
+      "title": "EXCEPTION HANDLING AND TEMPLATES",
+      "durationHours": 7,
+      "sections": [
+        {
+          "title": "Exception Handling",
+          "topics": [
+            "Exception handling in C++",
+            "Try-catch block",
+            "Throwing exceptions",
+            "Built-in types",
+            "Standard exceptions",
+            "Custom exceptions"
+          ]
+        },
+        {
+          "title": "Templates",
+          "topics": [
+            "Define templates",
+            "Template variables",
+            "Default template arguments",
+            "Template non-type arguments",
+            "Template argument deduction",
+            "Function template argument deduction",
+            "Class templates",
+            "Variable templates"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit-6",
+      "number": 6,
+      "title": "STANDARD TEMPLATE LIBRARY (STL)",
+      "durationHours": 7,
+      "sections": [
+        {
+          "title": "Topics",
+          "topics": [
+            "Basic concepts of STL",
+            "STL components",
+            "STL iterators",
+            "Container adapters"
+          ]
+        },
+        {
+          "title": "Sequence Containers",
+          "topics": [
+            "Array",
+            "Vector",
+            "Queue",
+            "Deque",
+            "Forward_list"
+          ]
+        },
+        {
+          "title": "Associative Containers",
+          "topics": [
+            "Set",
+            "Multiset",
+            "Map",
+            "Multimap"
+          ]
+        },
+        {
+          "title": "Unordered Associative Containers",
+          "topics": [
+            "Unordered_set",
+            "Unordered_multiset",
+            "Unordered_map",
+            "Unordered_multimap"
+          ]
+        },
+        {
+          "title": "Other Topics",
+          "topics": [
+            "Applications of STL",
+            "STL sorting algorithms",
+            "STL searching algorithms",
+            "STL copying algorithms",
+            "STL counting algorithms"
+          ]
+        }
+      ]
+    }
+  ]
+}
