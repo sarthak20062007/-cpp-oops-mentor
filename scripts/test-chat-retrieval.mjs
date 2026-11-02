@@ -42,8 +42,26 @@ const upstreamBodies = [];
 const mockOpenRouter = createServer(async (request, response) => {
   let body = "";
   for await (const chunk of request) body += chunk;
-  upstreamBodies.push(JSON.parse(body));
+  const parsedBody = JSON.parse(body);
+  upstreamBodies.push(parsedBody);
+  const currentQuestion = parsedBody.messages.at(-1)?.content ?? "";
+  if (currentQuestion.includes("simulate upstream rate limit")) {
+    response.writeHead(429, { "content-type": "application/json" });
+    response.end(JSON.stringify({ error: { message: "rate limited" } }));
+    return;
+  }
+  if (currentQuestion.includes("simulate unavailable model")) {
+    response.writeHead(404, { "content-type": "application/json" });
+    response.end(JSON.stringify({ error: { message: "model unavailable" } }));
+    return;
+  }
   response.writeHead(200, { "content-type": "application/json" });
+  const content = currentQuestion.includes("simulate multipart response")
+    ? [
+        { type: "text", text: "Multipart " },
+        { type: "text", text: "assistant answer" },
+      ]
+    : "Local mock response";
   response.end(
     JSON.stringify({
       id: "local-test",
@@ -53,7 +71,7 @@ const mockOpenRouter = createServer(async (request, response) => {
       choices: [
         {
           index: 0,
-          message: { role: "assistant", content: "Local mock response" },
+          message: { role: "assistant", content },
           finish_reason: "stop",
         },
       ],
@@ -117,6 +135,10 @@ try {
     });
     if (!response.ok) {
       throw new Error(`Question failed (${response.status}): ${question}`);
+    }
+    const result = await response.json();
+    if (result.message !== "Local mock response") {
+      throw new Error(`Backend response contract mismatch for: ${question}`);
     }
     const prompt = upstreamBodies.at(-1)?.messages
       ?.filter((message) => message.role === "system")
@@ -248,7 +270,64 @@ try {
     throw new Error("An out-of-syllabus question did not use the general fallback.");
   }
 
-  console.log(`Passed ${cases.length} syllabus topic routes, exam/viva/program/debug prompts, a contextual follow-up, and general C++ fallback using a local mock provider.`);
+  const userScenarios = [
+    "Hey",
+    "What is C++?",
+    "Explain constructors with an example.",
+    "Explain inheritance from Unit 2.",
+    "What is the difference between function overloading and overriding?",
+    "Write a C++ program to reverse a string.",
+    "Explain something outside my college syllabus.",
+  ];
+  for (const [index, content] of userScenarios.entries()) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": `local-scenario-${index}`,
+      },
+      body: JSON.stringify({ messages: [{ role: "user", content }] }),
+    });
+    const result = await response.json();
+    if (!response.ok || typeof result.message !== "string" || !result.message.trim()) {
+      throw new Error(`Scenario did not receive assistant text: ${content}`);
+    }
+  }
+
+  const multipartResponse = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-real-ip": "local-multipart-response",
+    },
+    body: JSON.stringify({
+      messages: [{ role: "user", content: "simulate multipart response" }],
+    }),
+  });
+  const multipartResult = await multipartResponse.json();
+  if (!multipartResponse.ok || multipartResult.message !== "Multipart assistant answer") {
+    throw new Error("Multipart provider text was not normalized to the frontend response contract.");
+  }
+
+  for (const [index, [content, expectedStatus, errorPart]] of [
+    ["simulate upstream rate limit", 429, "rate-limiting"],
+    ["simulate unavailable model", 502, "configured model"],
+  ].entries()) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": `local-provider-error-${index}`,
+      },
+      body: JSON.stringify({ messages: [{ role: "user", content }] }),
+    });
+    const result = await response.json();
+    if (response.status !== expectedStatus || !result.error?.includes(errorPart)) {
+      throw new Error(`Provider error was not returned as a safe JSON error for: ${content}`);
+    }
+  }
+
+  console.log(`Passed ${cases.length} syllabus topic routes, exam/viva/program/debug prompts, a contextual follow-up, general fallback, all seven requested scenarios, multipart provider text, rate-limit and unavailable-model errors using a local mock provider.`);
 } finally {
   if (app.exitCode === null && app.signalCode === null) {
     app.kill("SIGTERM");

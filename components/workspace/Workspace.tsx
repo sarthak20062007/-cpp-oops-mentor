@@ -226,15 +226,25 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
         }),
         signal: controller.signal,
       });
+      const responseText = await response.text();
       let result: unknown;
       try {
-        result = await response.json();
+        result = JSON.parse(responseText);
       } catch {
-        throw new Error("The chat service returned an invalid response.");
+        if (!response.ok) {
+          throw new Error(
+            `The chat service failed with HTTP ${response.status}. Please try again.`,
+          );
+        }
+        throw new Error(
+          "The chat service returned malformed JSON. Please retry your message.",
+        );
       }
 
       if (!result || typeof result !== "object") {
-        throw new Error("The chat service returned an invalid response.");
+        throw new Error(
+          "The chat service returned an unexpected response. Please retry your message.",
+        );
       }
 
       if (!response.ok) {
@@ -246,11 +256,18 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
       }
 
       if (!("message" in result) || typeof result.message !== "string") {
-        throw new Error("The chat service returned an invalid response.");
+        throw new Error(
+          "The chat service did not return assistant text. Please retry your message.",
+        );
       }
 
       if (controller.signal.aborted) return;
-      const assistantContent = result.message;
+      const assistantContent = result.message.trim();
+      if (!assistantContent) {
+        throw new Error(
+          "The chat service returned an empty answer. Please try again.",
+        );
+      }
       setConversations((current) =>
         current.map((conversation) =>
           conversation.id === conversationId

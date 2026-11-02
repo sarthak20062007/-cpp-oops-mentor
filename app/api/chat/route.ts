@@ -25,6 +25,25 @@ interface IncomingMessage {
   content: string;
 }
 
+function extractAssistantText(content: unknown): string | null {
+  if (typeof content === "string") {
+    const text = content.trim();
+    return text || null;
+  }
+
+  if (!Array.isArray(content)) return null;
+
+  const text = content
+    .flatMap((part) => {
+      if (!part || typeof part !== "object" || !("text" in part)) return [];
+      return typeof part.text === "string" ? [part.text] : [];
+    })
+    .join("")
+    .trim();
+
+  return text || null;
+}
+
 function jsonError(message: string, status: number) {
   return Response.json({ error: message }, { status });
 }
@@ -95,6 +114,18 @@ function parseMessages(value: unknown): IncomingMessage[] | null {
 }
 
 export async function POST(request: Request) {
+  try {
+    return await handlePost(request);
+  } catch {
+    console.error("Chat route failed before the provider response was handled.");
+    return jsonError(
+      "The chat service encountered an internal error. Please try again.",
+      500,
+    );
+  }
+}
+
+async function handlePost(request: Request) {
   const apiKey = process.env.OPENROUTER_API_KEY?.trim();
   if (!apiKey) {
     return jsonError("OpenRouter is not configured. Set OPENROUTER_API_KEY on the server.", 503);
@@ -155,9 +186,8 @@ export async function POST(request: Request) {
     );
   }
 
-  const syllabusContext = retrieveCollegeSyllabusContext(messages);
-
   try {
+    const syllabusContext = retrieveCollegeSyllabusContext(messages);
     const client = new OpenAI({
       apiKey,
       baseURL:
@@ -179,10 +209,16 @@ export async function POST(request: Request) {
       },
       { signal: request.signal },
     );
-    const response = completion.choices[0]?.message.content;
+    const assistantMessage = completion.choices[0]?.message;
+    const response =
+      extractAssistantText(assistantMessage?.content) ??
+      extractAssistantText(assistantMessage?.refusal);
 
-    if (typeof response !== "string" || !response.trim()) {
-      return jsonError("OpenRouter returned an empty response. Please try again.", 502);
+    if (!response) {
+      return jsonError(
+        "OpenRouter returned no readable assistant text. Please try again.",
+        502,
+      );
     }
 
     return Response.json({ message: response });
@@ -207,7 +243,10 @@ export async function POST(request: Request) {
       return jsonError("OpenRouter is temporarily unavailable. Please try again.", 502);
     }
 
-    console.error("OpenRouter chat request failed.");
-    return jsonError("Unable to reach OpenRouter. Check the server connection and try again.", 502);
+    console.error("Chat request failed.");
+    return jsonError(
+      "The chat service could not process this request. Please try again.",
+      502,
+    );
   }
 }
