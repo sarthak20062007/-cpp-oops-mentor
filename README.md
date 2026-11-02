@@ -48,6 +48,29 @@ npm run knowledge:check
 npm run test:chat-retrieval
 ```
 
+## Deploy to Vercel
+
+1. Import this project’s Git repository in Vercel and keep the project root set
+   to the repository root.
+2. Use the detected Next.js framework settings and the default install/build
+   commands (`npm install` and `npm run build`).
+3. Add these server-side environment variables in Vercel’s Project Settings.
+   Set them for each environment where chat should work:
+
+   - `OPENROUTER_API_KEY` — your OpenRouter key (mark as sensitive).
+   - `OPENROUTER_BASE_URL` — `https://openrouter.ai/api/v1` (optional; this is
+     the default).
+   - `OPENROUTER_MODEL` — `nvidia/nemotron-3.5-super-vl:free` (optional; this
+     is the default).
+
+   Do not prefix these variables with `NEXT_PUBLIC_`; the API key must remain
+   server-only. Redeploy after changing environment variables.
+4. Deploy and test both the homepage and a chat request on the Vercel URL.
+
+The `/api/chat` function includes the runtime knowledge-base files through
+Next.js output file tracing, so syllabus retrieval and its supporting unit,
+exam, and program material are available in the serverless deployment.
+
 Chat requests are sent server-side to OpenRouter. The API key is never sent to
 the browser. The chat endpoint allows at most 20 requests per minute per
 client IP in each server process. This in-memory limit is best-effort; configure

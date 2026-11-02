@@ -3,8 +3,15 @@ import { createServer } from "node:http";
 import { once } from "node:events";
 import { setTimeout as delay } from "node:timers/promises";
 import { join } from "node:path";
+import { readFileSync } from "node:fs";
 
 const root = process.cwd();
+const syllabus = JSON.parse(
+  readFileSync(
+    join(root, "knowledge-base/syllabus/college-oops-syllabus.json"),
+    "utf8",
+  ),
+);
 const cases = [
   ["Explain Basic data types", "Official topic: Basic data types"],
   ["Explain Derived data types", "Official topic: Derived data types"],
@@ -55,8 +62,14 @@ const mockOpenRouter = createServer(async (request, response) => {
     response.end(JSON.stringify({ error: { message: "model unavailable" } }));
     return;
   }
+  if (currentQuestion.includes("simulate connection failure")) {
+    request.socket.destroy();
+    return;
+  }
   response.writeHead(200, { "content-type": "application/json" });
-  const content = currentQuestion.includes("simulate multipart response")
+  const content = currentQuestion.includes("simulate empty response")
+    ? ""
+    : currentQuestion.includes("simulate multipart response")
     ? [
         { type: "text", text: "Multipart " },
         { type: "text", text: "assistant answer" },
@@ -149,6 +162,93 @@ try {
     }
   }
 
+  for (const level of ["beginner", "intermediate", "advanced"]) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": `local-level-${level}`,
+      },
+      body: JSON.stringify({
+        messages: [{
+          role: "user",
+          content: `Explain virtual functions at a ${level} level`,
+        }],
+      }),
+    });
+    const result = await response.json();
+    const lastUpstreamMessage = upstreamBodies.at(-1).messages.at(-1)?.content;
+    if (
+      !response.ok ||
+      result.message !== "Local mock response" ||
+      !lastUpstreamMessage?.includes(`${level} level`)
+    ) {
+      throw new Error(`The ${level}-level request was not forwarded to the model.`);
+    }
+  }
+
+  let topicRoutesPassed = 0;
+  for (const unit of syllabus.units) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": `local-unit-outline-${unit.number}`,
+      },
+      body: JSON.stringify({
+        messages: [{ role: "user", content: `Teach me Unit ${unit.number} from basics` }],
+      }),
+    });
+    const result = await response.json();
+    const prompt = upstreamBodies.at(-1).messages
+      .filter((message) => message.role === "system")
+      .map((message) => message.content)
+      .join("\n");
+    const expectedTopics = unit.sections.flatMap((section) =>
+      section.topics.map((topic) => topic.name),
+    );
+    if (!response.ok || result.message !== "Local mock response") {
+      throw new Error(`Complete Unit ${unit.number} request did not return assistant text.`);
+    }
+    for (const topic of expectedTopics) {
+      if (!prompt.includes(`Official topic: ${topic}`)) {
+        throw new Error(`Unit ${unit.number} outline omitted topic: ${topic}`);
+      }
+    }
+  }
+
+  for (const unit of syllabus.units) {
+    for (const section of unit.sections) {
+      for (const topic of section.topics) {
+        const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-real-ip": `local-topic-${unit.number}-${topic.name}`,
+          },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: `Explain ${topic.name}` }],
+          }),
+        });
+        const result = await response.json();
+        const prompt = upstreamBodies.at(-1).messages
+          .filter((message) => message.role === "system")
+          .map((message) => message.content)
+          .join("\n");
+        if (
+          !response.ok ||
+          result.message !== "Local mock response" ||
+          !prompt.includes(`Official topic: ${topic.name}`)
+        ) {
+          throw new Error(
+            `Official topic was not retrievable: Unit ${unit.number}, ${topic.name}`,
+          );
+        }
+        topicRoutesPassed += 1;
+      }
+    }
+  }
+
   const followUpResponse = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
     method: "POST",
     headers: {
@@ -189,6 +289,38 @@ try {
     .join("\n");
   if (!examPrompt.includes("6-mark questions")) {
     throw new Error("Exam-answer request did not retrieve the unit exam material.");
+  }
+
+  for (const marks of [2, 4, 6, 10]) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": `local-exam-${marks}-mark`,
+      },
+      body: JSON.stringify({
+        messages: [{
+          role: "user",
+          content: `Give me a ${marks}-mark answer on virtual functions`,
+        }],
+      }),
+    });
+    const result = await response.json();
+    const prompt = upstreamBodies.at(-1).messages
+      .filter((message) => message.role === "system")
+      .map((message) => message.content)
+      .join("\n");
+    if (
+      !response.ok ||
+      result.message !== "Local mock response" ||
+      !prompt.includes(`${marks}-mark`) ||
+      !prompt.includes("## 2-mark questions") ||
+      !prompt.includes("## 4-mark questions") ||
+      !prompt.includes("## 6-mark questions") ||
+      !prompt.includes("## 10-mark question")
+    ) {
+      throw new Error(`${marks}-mark request was not routed with exam context.`);
+    }
   }
 
   const vivaResponse = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
@@ -309,9 +441,17 @@ try {
     throw new Error("Multipart provider text was not normalized to the frontend response contract.");
   }
 
+  const expectedSecret = "local-retrieval-test-key";
+  const successfulResponseBody = JSON.stringify(multipartResult);
+  if (successfulResponseBody.includes(expectedSecret)) {
+    throw new Error("Provider credential appeared in the browser-facing API response.");
+  }
+
   for (const [index, [content, expectedStatus, errorPart]] of [
     ["simulate upstream rate limit", 429, "rate-limiting"],
     ["simulate unavailable model", 502, "configured model"],
+    ["simulate empty response", 502, "no readable assistant text"],
+    ["simulate connection failure", 502, "Unable to reach OpenRouter"],
   ].entries()) {
     const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
       method: "POST",
@@ -323,11 +463,60 @@ try {
     });
     const result = await response.json();
     if (response.status !== expectedStatus || !result.error?.includes(errorPart)) {
-      throw new Error(`Provider error was not returned as a safe JSON error for: ${content}`);
+      throw new Error(
+        `Provider error was not returned as expected for "${content}": ` +
+          `HTTP ${response.status}, ${JSON.stringify(result)}`,
+      );
     }
   }
 
-  console.log(`Passed ${cases.length} syllabus topic routes, exam/viva/program/debug prompts, a contextual follow-up, general fallback, all seven requested scenarios, multipart provider text, rate-limit and unavailable-model errors using a local mock provider.`);
+  for (const [body, expectedStatus] of [
+    [JSON.stringify({ messages: [] }), 400],
+    ["{malformed-json", 400],
+  ]) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": `local-invalid-request-${expectedStatus}-${body.length}`,
+      },
+      body,
+    });
+    const result = await response.json();
+    if (response.status !== expectedStatus || typeof result.error !== "string") {
+      throw new Error("Invalid chat input did not receive a safe JSON client error.");
+    }
+  }
+
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const response = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-real-ip": "local-rate-limit-verification",
+      },
+      body: JSON.stringify({ messages: [{ role: "user", content: "Hey" }] }),
+    });
+    if (!response.ok) throw new Error(`Rate-limit setup request ${attempt + 1} failed.`);
+  }
+  const limitedResponse = await fetch(`http://127.0.0.1:${appPort}/api/chat`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-real-ip": "local-rate-limit-verification",
+    },
+    body: JSON.stringify({ messages: [{ role: "user", content: "Hey" }] }),
+  });
+  const limitedResult = await limitedResponse.json();
+  if (
+    limitedResponse.status !== 429 ||
+    !limitedResult.error ||
+    !limitedResponse.headers.get("retry-after")
+  ) {
+    throw new Error("Application rate limit did not return a JSON 429 with Retry-After.");
+  }
+
+  console.log(`Passed all ${topicRoutesPassed} official topic routes across six complete unit outlines, ${cases.length} representative routes, beginner/intermediate/advanced prompts, 2/4/6/10-mark context routing, exam/viva/program/debug prompts, follow-up, general fallback, seven requested scenarios, multipart and empty provider responses, malformed request validation, safe credential handling, provider errors and connection loss, and application rate limiting using a local mock provider.`);
 } finally {
   if (app.exitCode === null && app.signalCode === null) {
     app.kill("SIGTERM");

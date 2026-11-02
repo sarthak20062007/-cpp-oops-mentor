@@ -1,4 +1,8 @@
-import OpenAI, { APIError } from "openai";
+import OpenAI, {
+  APIConnectionError,
+  APIConnectionTimeoutError,
+  APIError,
+} from "openai";
 import { retrieveCollegeSyllabusContext } from "@/lib/server/college-syllabus";
 
 export const runtime = "nodejs";
@@ -223,10 +227,10 @@ async function handlePost(request: Request) {
 
     return Response.json({ message: response });
   } catch (error) {
-    if (error instanceof Error && error.name === "APIConnectionTimeoutError") {
+    if (error instanceof APIConnectionTimeoutError) {
       return jsonError("OpenRouter took too long to respond. Please try again.", 504);
     }
-    if (error instanceof Error && error.name === "APIConnectionError") {
+    if (error instanceof APIConnectionError) {
       return jsonError("Unable to reach OpenRouter. Check the server connection and try again.", 502);
     }
 
