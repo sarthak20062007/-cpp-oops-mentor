@@ -1657,6 +1657,197 @@ kbd {
   }
 }
 
+/* Readable interface type scale; component geometry and colors remain unchanged. */
+body {
+  font-size: 15px;
+}
+
+.brand-name,
+.workspace-title,
+.session-item span,
+.sidebar-link span,
+.button,
+.toolbar-button,
+.breadcrumb,
+.suggestion-label,
+.assistant-name,
+.composer-textarea,
+.send-button {
+  font-size: 15px;
+}
+
+.brand-name,
+.workspace-title,
+.assistant-name {
+  line-height: 1.4;
+}
+
+.brand-compiler,
+.profile-version,
+.profile-name,
+.workspace-header-meta,
+.badge,
+.shortcuts-popover > div,
+.message-meta,
+.assistant-context,
+.code-file,
+.code-language-label,
+.copy-code-button,
+.settings-description,
+.settings-value,
+.documentation-link span:last-child {
+  font-size: 12px;
+}
+
+.sidebar-section-label,
+.suggestion-category,
+.conversation-divider-label,
+.dialog-eyebrow,
+kbd {
+  font-size: 13px;
+}
+
+.workspace-title {
+  font-weight: 550;
+}
+
+.welcome-section h1 {
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.welcome-section > p:last-child {
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.suggestion-label {
+  line-height: 1.45;
+}
+
+.user-bubble,
+.markdown-content {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.assistant-name {
+  font-weight: 600;
+}
+
+.markdown-content h2 {
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.markdown-content h3 {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.markdown-content h4 {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.markdown-content p {
+  margin-bottom: 14px;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  line-height: 1.7;
+}
+
+.markdown-content table {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.shiki-code,
+.plain-code {
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.shiki-code .line {
+  min-height: 1.75em;
+}
+
+.code-toolbar {
+  min-height: 36px;
+}
+
+.copy-code-button,
+.send-button {
+  line-height: 1.4;
+}
+
+.composer-textarea {
+  line-height: 1.6;
+}
+
+.composer-hint-row,
+.status-footer {
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.composer-hint-row kbd {
+  font-size: 11px;
+}
+
+.chat-error,
+.loading-indicator,
+.shortcuts-title,
+.dialog-description,
+.settings-label,
+.documentation-link {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .workspace-title {
+    font-size: 15px;
+  }
+
+  .workspace-header-meta,
+  .breadcrumb {
+    font-size: 13px;
+  }
+
+  .welcome-section h1 {
+    font-size: 30px;
+  }
+
+  .welcome-section > p:last-child {
+    font-size: 15px;
+  }
+
+  .suggestion-label,
+  .user-bubble,
+  .markdown-content,
+  .composer-textarea {
+    font-size: 15px;
+  }
+
+  .suggestion-category,
+  .conversation-divider-label {
+    font-size: 12px;
+  }
+
+  .shiki-code,
+  .plain-code {
+    font-size: 15px;
+  }
+
+  .composer-hint-row,
+  .status-footer {
+    font-size: 12px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

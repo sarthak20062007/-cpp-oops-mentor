@@ -13,24 +13,24 @@ export function createChatId(): string {
 
 export const suggestions: Suggestion[] = [
   {
-    category: "MECHANISM",
-    label: "constexpr vs consteval",
-    prompt: "What is the difference between constexpr and consteval in C++?",
+    category: "C++ Basics",
+    label: "Variables and Data Types",
+    prompt: "Explain C++ variables and basic data types with simple examples.",
   },
   {
-    category: "OWNERSHIP",
-    label: "std::move semantics",
-    prompt: "Explain std::move and move semantics with an example.",
+    category: "Classes & Objects",
+    label: "Understand OOP Fundamentals",
+    prompt: "Explain classes and objects in C++ and the fundamentals of OOP.",
   },
   {
-    category: "COROUTINES",
-    label: "Coroutines & co_await",
-    prompt: "How do C++ coroutines and co_await work?",
+    category: "Constructors",
+    label: "Types of Constructors",
+    prompt: "Explain the types of constructors in C++ with simple examples.",
   },
   {
-    category: "LIFETIME",
-    label: "Zero-overhead RAII",
-    prompt: "Explain RAII and how it provides zero-overhead resource management.",
+    category: "Inheritance",
+    label: "Types of Inheritance",
+    prompt: "Explain the types of inheritance in C++ with simple examples.",
   },
 ];
 

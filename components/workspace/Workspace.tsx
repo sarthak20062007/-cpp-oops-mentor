@@ -181,8 +181,8 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
     setSidebarMode((mode) => (mode === "collapsed" ? "default" : "collapsed"));
   }, []);
 
-  const sendMessage = useCallback(async () => {
-    const content = draft.trim();
+  const sendMessage = useCallback(async (messageText?: string) => {
+    const content = (messageText ?? draft).trim();
     if (!content || loading || !activeConversationId) return;
 
     const conversationId = activeConversationId;
@@ -326,8 +326,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
   }, []);
 
   function chooseSuggestion(prompt: string) {
-    setDraft(prompt);
-    inputRef.current?.focus();
+    void sendMessage(prompt);
   }
 
   return (
