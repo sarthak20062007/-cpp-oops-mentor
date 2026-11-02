@@ -47,4 +47,18 @@ npm run build
 ```
 
 Chat requests are sent server-side to OpenRouter. The API key is never sent to
-the browser.
+the browser. The chat endpoint allows at most 20 requests per minute per
+client IP in each server process. This in-memory limit is best-effort; configure
+your hosting proxy to overwrite `X-Real-IP` or `X-Forwarded-For` with a
+trusted client address for it to be effective.
+
+## Git secret check
+
+The pre-commit hook rejects staged environment files and scans staged content
+for common API-key and credential patterns. Enable it once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Run the staged-file check manually with `npm run security:staged`.

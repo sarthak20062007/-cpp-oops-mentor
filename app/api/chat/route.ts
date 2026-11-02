@@ -8,6 +8,10 @@ const MAX_BODY_BYTES = 96 * 1024;
 const MAX_MESSAGES = 40;
 const MAX_MESSAGE_LENGTH = 16_000;
 const MAX_TOTAL_LENGTH = 64_000;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 20;
+const RATE_LIMIT_MAX_CLIENTS = 1_000;
+const rateLimitBuckets = new Map<string, number[]>();
 
 const SYSTEM_INSTRUCTIONS = `You are C++ (OOPs) Mentor, an expert C++ programming tutor. Your tagline is "Learn Complete C++. Master OOPs." You are not a generic chatbot: focus on helping users learn and apply C++ while answering general C++ questions directly. Object-Oriented Programming is your primary specialization, and OOPs questions deserve extra depth and practical examples.
 
@@ -22,6 +26,40 @@ interface IncomingMessage {
 
 function jsonError(message: string, status: number) {
   return Response.json({ error: message }, { status });
+}
+
+function checkRateLimit(request: Request): number | null {
+  const now = Date.now();
+  for (const [client, timestamps] of rateLimitBuckets) {
+    const activeTimestamps = timestamps.filter(
+      (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS,
+    );
+    if (activeTimestamps.length === 0) {
+      rateLimitBuckets.delete(client);
+    } else {
+      rateLimitBuckets.set(client, activeTimestamps);
+    }
+  }
+
+  const forwardedIp = request.headers.get("x-real-ip")?.trim()
+    || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || "unknown";
+  const client =
+    rateLimitBuckets.has(forwardedIp) || rateLimitBuckets.size < RATE_LIMIT_MAX_CLIENTS
+      ? forwardedIp
+      : "overflow";
+  const timestamps = rateLimitBuckets.get(client) ?? [];
+
+  if (timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return Math.max(
+      1,
+      Math.ceil((RATE_LIMIT_WINDOW_MS - (now - timestamps[0]!)) / 1000),
+    );
+  }
+
+  timestamps.push(now);
+  rateLimitBuckets.set(client, timestamps);
+  return null;
 }
 
 function parseMessages(value: unknown): IncomingMessage[] | null {
@@ -108,6 +146,14 @@ export async function POST(request: Request) {
     );
   }
 
+  const retryAfter = checkRateLimit(request);
+  if (retryAfter !== null) {
+    return Response.json(
+      { error: "Too many chat requests. Please wait before trying again." },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } },
+    );
+  }
+
   try {
     const client = new OpenAI({
       apiKey,
@@ -154,7 +200,7 @@ export async function POST(request: Request) {
       return jsonError("OpenRouter is temporarily unavailable. Please try again.", 502);
     }
 
-    console.error("OpenRouter chat request failed.", error);
+    console.error("OpenRouter chat request failed.");
     return jsonError("Unable to reach OpenRouter. Check the server connection and try again.", 502);
   }
 }
