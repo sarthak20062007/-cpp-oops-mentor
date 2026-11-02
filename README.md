@@ -10,7 +10,6 @@ and viva practice.
 
 - Node.js 20 or newer
 - npm
-- An OpenAI-compatible FreeLLMAPI endpoint and API key
 
 ## Setup
 
@@ -20,17 +19,7 @@ and viva practice.
    npm install
    ```
 
-2. Create `.env.local` in the project root:
-
-   ```dotenv
-   FREELLMAPI_API_KEY=your-unified-api-key
-   FREELLMAPI_BASE_URL=https://your-openai-compatible-endpoint/v1
-   FREELLMAPI_MODEL=your-model-name
-   ```
-
-   Keep this file private; it is excluded from Git.
-
-3. Start the development server:
+2. Start the development server:
 
    ```bash
    npm run dev
@@ -46,5 +35,5 @@ npm run lint
 npm run build
 ```
 
-Chat requests are streamed through the server-side `/api/chat` route. API
-credentials are read only by the server.
+Chat replies currently use local mock responses. No external AI provider is
+configured.

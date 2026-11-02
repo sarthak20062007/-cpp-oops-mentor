@@ -6,10 +6,8 @@ import type { ChatMessage as ChatMessageData } from "@/types/chat";
 
 export default function ChatMessage({
   message,
-  isStreaming = false,
 }: {
   message: ChatMessageData;
-  isStreaming?: boolean;
 }) {
   if (message.role === "user") {
     return (
@@ -43,13 +41,7 @@ export default function ChatMessage({
               const language = /language-(\w+)/.exec(className ?? "")?.[1];
               const code = String(children).replace(/\n$/, "");
               if (language) {
-                return (
-                  <CodeBlock
-                    code={code}
-                    isStreaming={isStreaming}
-                    language={language}
-                  />
-                );
+                return <CodeBlock code={code} language={language} />;
               }
               return (
                 <code className="inline-code" {...props}>

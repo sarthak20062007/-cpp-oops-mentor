@@ -5,24 +5,14 @@ import { useEffect, useState } from "react";
 
 interface CodeBlockProps {
   code: string;
-  isStreaming?: boolean;
   language: string;
 }
 
-export default function CodeBlock({
-  code,
-  isStreaming = false,
-  language,
-}: CodeBlockProps) {
+export default function CodeBlock({ code, language }: CodeBlockProps) {
   const [highlightedHtml, setHighlightedHtml] = useState("");
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
 
   useEffect(() => {
-    if (isStreaming) {
-      setHighlightedHtml("");
-      return;
-    }
-
     let active = true;
 
     async function highlight() {
@@ -42,7 +32,7 @@ export default function CodeBlock({
     return () => {
       active = false;
     };
-  }, [code, isStreaming, language]);
+  }, [code, language]);
 
   async function copyCode() {
     try {

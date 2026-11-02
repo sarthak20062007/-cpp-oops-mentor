@@ -13,6 +13,7 @@ import {
   ACTIVE_CHAT_STORAGE_KEY,
   CHAT_STORAGE_KEY,
   createChatId,
+  createMockResponse,
   getConversationTitle,
   initialConversation,
   isChatConversation,
@@ -23,7 +24,6 @@ import {
   DocumentationPanel,
   SettingsPanel,
 } from "@/components/workspace/WorkspaceDialogs";
-import { streamChatReply } from "@/lib/chat-client";
 import type {
   ChatConversation,
   ChatMessage as ChatMessageData,
@@ -43,7 +43,6 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
     useState(initialConversation.id);
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
-  const [chatError, setChatError] = useState<string | null>(null);
   const [storageReady, setStorageReady] = useState(false);
   const [clearConfirmationOpen, setClearConfirmationOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -54,7 +53,7 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const activeRequest = useRef<AbortController | null>(null);
+  const responseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const activeConversation = conversations.find(
     (conversation) => conversation.id === activeConversationId,
@@ -105,16 +104,17 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
-      behavior: loading ? "auto" : "smooth",
+      behavior: "smooth",
       block: "end",
     });
   }, [loading, messages]);
 
   const cancelPendingResponse = useCallback(() => {
-    activeRequest.current?.abort();
-    activeRequest.current = null;
+    if (responseTimer.current) {
+      clearTimeout(responseTimer.current);
+      responseTimer.current = null;
+    }
     setLoading(false);
-    setChatError(null);
   }, []);
 
   const createNewChat = useCallback(() => {
@@ -180,21 +180,18 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
     setSidebarMode((mode) => (mode === "collapsed" ? "default" : "collapsed"));
   }, []);
 
-  const sendMessage = useCallback(async () => {
+  const sendMessage = useCallback(() => {
     const content = draft.trim();
     if (!content || loading || !activeConversationId) return;
 
     const conversationId = activeConversationId;
-    const userMessage: ChatMessageData = {
-      id: createChatId(),
-      role: "user",
-      content,
-    };
-    const requestMessages = [...messages, userMessage];
     setConversations((current) =>
       current.map((conversation) => {
         if (conversation.id !== conversationId) return conversation;
-        const messages = [...conversation.messages, userMessage];
+        const messages = [
+          ...conversation.messages,
+          { id: createChatId(), role: "user" as const, content },
+        ];
         return {
           ...conversation,
           title: getConversationTitle(messages),
@@ -204,63 +201,35 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
       }),
     );
     setDraft("");
-    setChatError(null);
     setLoading(true);
-    const controller = new AbortController();
-    activeRequest.current = controller;
-    const assistantId = createChatId();
-
-    try {
-      await streamChatReply(requestMessages, controller.signal, {
-        onToken(token) {
-          setConversations((current) =>
-            current.map((conversation) => {
-              if (conversation.id !== conversationId) return conversation;
-              const assistantMessage = conversation.messages.find(
-                (message) => message.id === assistantId,
-              );
-              const updatedMessages = assistantMessage
-                ? conversation.messages.map((message) =>
-                    message.id === assistantId
-                      ? { ...message, content: message.content + token }
-                      : message,
-                  )
-                : [
-                    ...conversation.messages,
-                    {
-                      id: assistantId,
-                      role: "assistant" as const,
-                      content: token,
-                    },
-                  ];
-              return {
+    if (responseTimer.current) clearTimeout(responseTimer.current);
+    responseTimer.current = setTimeout(() => {
+      setConversations((current) =>
+        current.map((conversation) =>
+          conversation.id === conversationId
+            ? {
                 ...conversation,
-                messages: updatedMessages,
+                messages: [
+                  ...conversation.messages,
+                  {
+                    id: createChatId(),
+                    role: "assistant",
+                    content: createMockResponse(content),
+                  },
+                ],
                 updatedAt: Date.now(),
-              };
-            }),
-          );
-        },
-      });
-    } catch (error) {
-      if (!controller.signal.aborted) {
-        setChatError(
-          error instanceof Error
-            ? error.message
-            : "The AI response could not be generated. Please try again.",
-        );
-      }
-    } finally {
-      if (activeRequest.current === controller) {
-        activeRequest.current = null;
-        setLoading(false);
-      }
-    }
-  }, [activeConversationId, draft, loading, messages]);
+              }
+            : conversation,
+        ),
+      );
+      setLoading(false);
+      responseTimer.current = null;
+    }, 700);
+  }, [activeConversationId, draft, loading]);
 
   useEffect(
     () => () => {
-      activeRequest.current?.abort();
+      if (responseTimer.current) clearTimeout(responseTimer.current);
     },
     [],
   );
@@ -338,16 +307,10 @@ export default function Workspace({ initialMessages }: WorkspaceProps) {
                   <div className="message-list" aria-live="polite">
                     {messages.map((message) => (
                       <ChatMessage
-                        isStreaming={loading && message.role === "assistant"}
                         key={message.id}
                         message={message}
                       />
                     ))}
-                    {chatError && (
-                      <p className="chat-error" role="alert">
-                        {chatError}
-                      </p>
-                    )}
                     {loading && (
                       <div className="loading-indicator" role="status">
                         <span className="assistant-avatar" aria-hidden="true">
